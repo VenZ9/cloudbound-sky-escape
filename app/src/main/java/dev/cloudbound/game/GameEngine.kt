@@ -160,7 +160,7 @@ class GameEngine(private val random: Random = Random.Default) {
         private set
     var lives = 3
         private set
-    var elapsed = 0f
+    var elapsed = 0.0
         private set
     var worldDistance = 0f
         private set
@@ -300,7 +300,7 @@ class GameEngine(private val random: Random = Random.Default) {
         score = 0
         coins = 0
         lives = 3
-        elapsed = 0f
+        elapsed = 0.0
         worldDistance = 0f
         invulnerability = 1.25f
         spawnTimer = 1.0f
@@ -338,7 +338,7 @@ class GameEngine(private val random: Random = Random.Default) {
         if (state != RunState.PLAYING) return
         val dt = deltaSeconds.coerceIn(0f, 0.05f)
         elapsed += dt
-        worldDistance += (0.15f + min(0.22f, elapsed * 0.0010f)) * dt
+        worldDistance += (0.15f + min(0.22f, (elapsed * 0.0010).toFloat())) * dt
         invulnerability = max(0f, invulnerability - dt)
 
         if (!hintDismissed) {
@@ -368,7 +368,7 @@ class GameEngine(private val random: Random = Random.Default) {
             )
         }
 
-        val difficulty = min(1f, elapsed / 180f)
+        val difficulty = min(1f, (elapsed / 180.0).toFloat())
         spawnTimer -= dt
         if (spawnTimer <= 0f) {
             spawnPattern(difficulty)
@@ -381,7 +381,7 @@ class GameEngine(private val random: Random = Random.Default) {
             hazard.y -= riseSpeed * dt
             when (hazard.type) {
                 HazardType.BIRD -> {
-                    hazard.x += sin(elapsed * 2.8f + hazard.seed) * dt * 0.14f
+                    hazard.x += sin(elapsed.toFloat() * 2.8f + hazard.seed) * dt * 0.14f
                 }
                 HazardType.LIGHTNING -> {
                     // Telegraph warning phase before full discharge
@@ -409,7 +409,6 @@ class GameEngine(private val random: Random = Random.Default) {
         }
 
         hazards.removeAll { it.y < -0.3f || it.x > 1.3f || it.x < -0.3f }
-        collectibles.removeAll { it.y < -0.2f || it.collected }
 
         // Particles update
         particles.forEach { p ->
@@ -420,7 +419,11 @@ class GameEngine(private val random: Random = Random.Default) {
         particles.removeAll { p -> p.life <= 0f }
 
         checkCollisions()
-        score = (elapsed * 10f + coins * 75f).toInt()
+
+        // Collected coins are reaped here so they leave the world in the same frame
+        collectibles.removeAll { it.y < -0.2f || it.collected }
+
+        score = (elapsed * 10.0 + coins * 75).toInt()
         if (state == RunState.GAME_OVER) {
             bestScore = max(bestScore, score)
         }
@@ -548,7 +551,7 @@ class GameEngine(private val random: Random = Random.Default) {
             if (lives <= 0) {
                 lives = 0
                 state = RunState.GAME_OVER
-                score = (elapsed * 10f + coins * 75f).toInt()
+                score = (elapsed * 10.0 + coins * 75).toInt()
                 bestScore = max(bestScore, score)
                 onGameOver?.invoke()
                 onStateChanged?.invoke(RunState.GAME_OVER)
@@ -569,6 +572,6 @@ class GameEngine(private val random: Random = Random.Default) {
         balloonY = balloonY,
         selectedSkinId = selectedSkinId,
         showHint = !hintDismissed && state == RunState.PLAYING,
-        difficulty = min(1f, elapsed / 180f)
+        difficulty = min(1f, (elapsed / 180.0).toFloat())
     )
 }

@@ -123,7 +123,7 @@ class GameEngineTest {
         assertEquals(RunState.PLAYING, game.state)
         assertEquals(3, game.lives)
         assertEquals(0, game.score)
-        assertEquals(0f, game.elapsed, 0f)
+        assertEquals(0.0, game.elapsed, 0.0)
         assertNotEquals(0, game.snapshot().bestScore)
 
         var gameOverFired = false
