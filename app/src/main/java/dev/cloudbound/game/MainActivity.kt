@@ -51,7 +51,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -1162,7 +1161,8 @@ fun CloudBoundLogo(modifier: Modifier = Modifier) {
         // Hot air balloon icon
         drawOval(
             Color(0xFFE06443),
-            Rect(cx - size.width * 0.28f, size.height * 0.08f, cx + size.width * 0.28f, size.height * 0.68f)
+            topLeft = Offset(cx - size.width * 0.28f, size.height * 0.08f),
+            size = androidx.compose.ui.geometry.Size(size.width * 0.56f, size.height * 0.60f)
         )
         drawArc(
             Color(0xFFF39C38),
@@ -1175,7 +1175,8 @@ fun CloudBoundLogo(modifier: Modifier = Modifier) {
         )
         drawOval(
             Color(0xFFFBD665),
-            Rect(cx - size.width * 0.10f, size.height * 0.12f, cx + size.width * 0.10f, size.height * 0.64f)
+            topLeft = Offset(cx - size.width * 0.10f, size.height * 0.12f),
+            size = androidx.compose.ui.geometry.Size(size.width * 0.20f, size.height * 0.52f)
         )
 
         // Ropes & Basket
@@ -1235,15 +1236,18 @@ fun SkinPreviewCanvas(skin: BalloonSkin, modifier: Modifier = Modifier) {
         // Envelope
         drawOval(
             Color(skin.primaryColor),
-            Rect(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2)
+            topLeft = Offset(cx - w / 2, cy - h / 2),
+            size = androidx.compose.ui.geometry.Size(w, h)
         )
         drawOval(
             Color(skin.secondaryColor),
-            Rect(cx - w * 0.34f, cy - h / 2 + 2f, cx + w * 0.34f, cy + h / 2 - 2f)
+            topLeft = Offset(cx - w * 0.34f, cy - h / 2 + 2f),
+            size = androidx.compose.ui.geometry.Size(w * 0.68f, h - 4f)
         )
         drawOval(
             Color(skin.accentColor),
-            Rect(cx - w * 0.14f, cy - h / 2 + 4f, cx + w * 0.14f, cy + h / 2 - 4f)
+            topLeft = Offset(cx - w * 0.14f, cy - h / 2 + 4f),
+            size = androidx.compose.ui.geometry.Size(w * 0.28f, h - 8f)
         )
     }
 }
