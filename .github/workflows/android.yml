@@ -25,13 +25,15 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set Up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install Android SDK Platform 35 and Build Tools
         run: |
-          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          SDKMGR="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$SDKMGR" ]; then
+            SDKMGR="$(command -v sdkmanager)"
+          fi
+          echo "Using sdkmanager: $SDKMGR (ANDROID_HOME=$ANDROID_HOME)"
+          yes | "$SDKMGR" --licenses >/dev/null || true
+          "$SDKMGR" "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Grant Execute Permission to Gradle Wrapper
         run: chmod +x gradlew
