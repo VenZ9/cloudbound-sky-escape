@@ -1,0 +1,20 @@
+# Gradle
+.gradle/
+build/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+captures/
+.cxx/
+
+# Local SDK paths (machine-specific)
+local.properties
+
+# Signing files & secrets
+*.jks
+*.keystore
+keystore.properties
+
+# OS noise
+.DS_Store
